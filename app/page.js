@@ -1,7 +1,27 @@
+"use client";
 import Image from "next/image";
 import styles from "./page.module.css";
+import { useRef, useEffect } from "react";
 
 export default function Home() {
+  const worker = useRef(null);
+  useEffect(() => {
+    const loadMe = async () => {
+      if (worker.current === null) {
+        worker.current = new Worker(new URL("./worker.js", import.meta.url), {
+          type: "module",
+        });
+      }
+      if (worker.current) {
+        worker.current.postMessage({ command: "hello" });
+        worker.current.onmessage = function (e) {
+          console.log(e.status);
+        };
+      }
+    };
+    loadMe();
+  }, []);
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -73,7 +93,7 @@ export default function Home() {
           <h2>
             Templates <span>-&gt;</span>
           </h2>
-          <p>Explore starter templates for Next.js.</p>
+          <p>Explore</p>
         </a>
 
         <a
