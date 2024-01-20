@@ -15,7 +15,7 @@ export default function Home() {
       if (worker.current) {
         worker.current.postMessage({ command: "hello" });
         worker.current.onmessage = function (e) {
-          console.log(e.status);
+          console.log(e.data);
         };
       }
     };
